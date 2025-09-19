@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>start1712的个人网页</title>
+    <title>啥都木有</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <script>
@@ -69,6 +69,16 @@
             .shadow-move {
                 animation: shadowMove 6s ease-in-out infinite;
             }
+            .slide-in-up {
+                animation: slideInUp 0.8s ease-out forwards;
+                opacity: 0;
+            }
+            .rotate-slow {
+                animation: rotateSlow 20s linear infinite;
+            }
+            .bounce-soft {
+                animation: bounceSoft 3s ease-in-out infinite;
+            }
         }
 
         @keyframes float {
@@ -99,17 +109,38 @@
             0%, 100% { box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); }
             50% { box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); }
         }
+
+        @keyframes slideInUp {
+            from { 
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes rotateSlow {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes bounceSoft {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
     </style>
 </head>
 <body class="min-h-screen bg-light dark:bg-dark bg-shift theme-transition p-4 md:p-8 flex flex-col items-center gap-6 md:gap-8">
     <div class="absolute top-4 right-4 pulse-slow float-random">
         <i id="moon-icon" class="fa fa-moon-o text-2xl rotate-icon text-gray-700 dark:text-gray-200" aria-hidden="true"></i>
-        <i id="sun-icon" class="fa fa-sun-o text-2xl rotate-icon text-gray-700 dark:text-gray-200" aria-hidden="true"></i>
+        <i id="sun-icon" class="fa fa-sun-o text-2xl rotate-icon text-gray-700 dark:text-gray-200 icon-hidden" aria-hidden="true"></i>
     </div>
 
-    <h1 class="text-4xl md:text-5xl font-bold text-gray-800 dark:text-gray-100 text-center mt-4 theme-transition fade-in float-animation">个人主页</h1>
+    <h1 class="text-4xl md:text-5xl font-bold text-gray-800 dark:text-gray-100 text-center mt-4 theme-transition fade-in float-animation">你被骗了</h1>
     
-    <div class="w-full max-w-3xl rounded-xl overflow-hidden shadow-lg dark:shadow-gray-700/20 theme-transition scale-hover fade-in glow-effect shadow-move">
+    <div class="w-full max-w-3xl rounded-xl overflow-hidden shadow-lg dark:shadow-gray-700/20 theme-transition scale-hover glow-effect shadow-move slide-in-up" style="animation-delay: 0.3s">
         <iframe 
             src="//player.bilibili.com/player.html?isOutside=true&aid=80433022&bvid=BV1GJ411x7h7&cid=137649199&p=1" 
             scrolling="no" 
@@ -130,102 +161,88 @@
         const videoContainer = document.querySelector('.scale-hover');
         const body = document.body;
         
+        // 初始化背景样式
+        const lightBg = 'linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%)';
+        const darkBg = 'linear-gradient(135deg, #333333 0%, #444444 100%)';
+        
         function updateIcons(isDarkMode) {
-            if (isDarkMode) {
-                sunIcon.classList.remove('icon-hidden');
-                sunIcon.classList.add('icon-visible');
-                moonIcon.classList.remove('icon-visible');
-                moonIcon.classList.add('icon-hidden');
-                body.style.background = 'linear-gradient(135deg, #333333 0%, #444444 100%)';
-            } else {
-                moonIcon.classList.remove('icon-hidden');
-                moonIcon.classList.add('icon-visible');
-                sunIcon.classList.remove('icon-visible');
-                sunIcon.classList.add('icon-hidden');
-                body.style.background = 'linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%)';
-            }
+            sunIcon.classList.toggle('icon-visible', isDarkMode);
+            sunIcon.classList.toggle('icon-hidden', !isDarkMode);
+            moonIcon.classList.toggle('icon-visible', !isDarkMode);
+            moonIcon.classList.toggle('icon-hidden', isDarkMode);
+            body.style.background = isDarkMode ? darkBg : lightBg;
         }
         
         function initTheme() {
-            const savedTheme = localStorage.getItem('theme');
-            // 默认使用白色主题，忽略系统偏好
+            const savedTheme = localStorage.getItem('theme') || 'light';
             const isDarkMode = savedTheme === 'dark';
             
-            if (isDarkMode) {
-                html.classList.add('dark');
-                body.style.background = 'linear-gradient(135deg, #333333 0%, #444444 100%)';
-            } else {
-                html.classList.remove('dark');
-                body.style.background = 'linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%)';
-                // 确保默认保存为白色主题
-                if (!savedTheme) localStorage.setItem('theme', 'light');
-            }
-            
+            html.classList.toggle('dark', isDarkMode);
+            body.style.background = isDarkMode ? darkBg : lightBg;
             updateIcons(isDarkMode);
         }
         
         function toggleTheme() {
-            const isDarkMode = html.classList.contains('dark');
+            const isDarkMode = html.classList.toggle('dark');
+            localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
+            updateIcons(isDarkMode);
             
-            if (isDarkMode) {
-                html.classList.remove('dark');
-                localStorage.setItem('theme', 'light');
-                body.style.background = 'linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%)';
-                updateIcons(false);
-            } else {
-                html.classList.add('dark');
-                localStorage.setItem('theme', 'dark');
-                body.style.background = 'linear-gradient(135deg, #333333 0%, #444444 100%)';
-                updateIcons(true);
-            }
-            
-            heading.classList.add('scale-105', 'rotate-1');
+            // 主题切换动画序列
+            heading.classList.add('scale-105', 'rotate-1', 'transition-transform', 'duration-300');
             setTimeout(() => heading.classList.remove('scale-105', 'rotate-1'), 300);
             
-            videoContainer.classList.add('scale-102');
+            videoContainer.classList.add('scale-102', 'transition-transform', 'duration-300');
             setTimeout(() => videoContainer.classList.remove('scale-102'), 300);
             
-            body.classList.add('opacity-90');
+            body.classList.add('opacity-90', 'transition-opacity', 'duration-200');
             setTimeout(() => body.classList.remove('opacity-90'), 200);
         }
         
         function handleScroll() {
             const scrollPosition = window.scrollY;
+            const scrollFactor = Math.min(scrollPosition / 1000, 1);
+            
             if (scrollPosition > 30) {
-                heading.style.transform = `translateY(${scrollPosition * 0.1}px) scale(${1 - scrollPosition / 1000})`;
-                heading.style.opacity = `${1 - scrollPosition / 500}`;
-                videoContainer.style.boxShadow = `0 0 ${10 + scrollPosition / 20}px rgba(0, 0, 0, ${0.1 + scrollPosition / 2000})`;
+                heading.style.transform = `
+                    translateY(${scrollPosition * 0.1}px) 
+                    scale(${1 - scrollFactor * 0.3})
+                    rotate(${scrollFactor * 1}deg)
+                `;
+                heading.style.opacity = `${1 - scrollFactor * 0.7}`;
+                videoContainer.style.transform = `scale(${1 + scrollFactor * 0.05})`;
             } else {
-                heading.style.transform = 'translateY(0) scale(1)';
+                heading.style.transform = 'translateY(0) scale(1) rotate(0)';
                 heading.style.opacity = '1';
-                videoContainer.style.boxShadow = '';
+                videoContainer.style.transform = 'scale(1)';
             }
         }
         
+        // 事件监听
         themeToggleIcons.addEventListener('click', toggleTheme);
         window.addEventListener('scroll', handleScroll);
-        
-        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
-            if (!localStorage.getItem('theme')) {
-                initTheme();
-            }
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
+            if (!localStorage.getItem('theme')) initTheme();
         });
         
         window.addEventListener('DOMContentLoaded', () => {
             initTheme();
             
+            // 视频容器渐显动画
             setTimeout(() => {
                 videoContainer.style.opacity = '1';
             }, 300);
 
-            setInterval(() => {
-                const randomX = (Math.random() - 0.5) * 2;
-                const randomY = (Math.random() - 0.5) * 2;
-                heading.style.transform += ` translate(${randomX}px, ${randomY}px)`;
-                setTimeout(() => {
-                    heading.style.transform = heading.style.transform.replace(` translate(${randomX}px, ${randomY}px)`, '');
-                }, 500);
-            }, 3000);
+            // 添加视差滚动检测
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('bounce-soft');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.5 });
+
+            observer.observe(videoContainer);
         });
     </script>
 </body>
