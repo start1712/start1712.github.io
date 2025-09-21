@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>啥都木有</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        light: '#f5f5f5',
+                        dark: '#333333',
+                        accent: '#3b82f6',
+                    },
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .theme-transition {
+                transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            }
+            .icon-hidden {
+                display: none !important;
+            }
+            .icon-visible {
+                display: inline-block !important;
+                z-index: 10;
+            }
+            .float-animation {
+                animation: float 6s ease-in-out infinite;
+            }
+            .pulse-slow {
+                animation: pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+                cursor: pointer; /* 确保整个区域可点击 */
+            }
+            .scale-hover {
+                transition: transform 0.3s ease, box-shadow 0.3s ease;
+            }
+            .scale-hover:hover {
+                transform: scale(1.02);
+            }
+            .rotate-icon {
+                transition: transform 0.5s ease;
+                cursor: pointer;
+            }
+            .rotate-icon:hover {
+                transform: rotate(90deg) scale(1.1);
+            }
+            .fade-in {
+                animation: fadeIn 1s ease-in-out;
+            }
+            .bg-shift {
+                background-size: 200% 200%;
+                animation: bgShift 15s ease infinite;
+            }
+            .glow-effect {
+                transition: box-shadow 0.3s ease;
+            }
+            .glow-effect:hover {
+                box-shadow: 0 0 15px rgba(59, 130, 246, 0.5);
+            }
+            .float-random {
+                animation: floatRandom 8s ease-in-out infinite;
+            }
+            .shadow-move {
+                animation: shadowMove 6s ease-in-out infinite;
+            }
+            .slide-in-up {
+                animation: slideInUp 0.8s ease-out forwards;
+                opacity: 0;
+            }
+            .rotate-slow {
+                animation: rotateSlow 20s linear infinite;
+            }
+            .bounce-soft {
+                animation: bounceSoft 3s ease-in-out infinite;
+            }
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+
+        @keyframes floatRandom {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            25% { transform: translateY(-8px) rotate(1deg); }
+            50% { transform: translateY(-12px) rotate(0deg); }
+            75% { transform: translateY(-5px) rotate(-1deg); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes bgShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes shadowMove {
+            0%, 100% { box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); }
+            50% { box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); }
+        }
+
+        @keyframes slideInUp {
+            from { 
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes rotateSlow {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes bounceSoft {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-light dark:bg-dark bg-shift theme-transition p-4 md:p-8 flex flex-col items-center gap-6 md:gap-8">
+    <!-- 主题切换按钮容器 -->
+    <div class="absolute top-4 right-4 pulse-slow float-random z-50" id="theme-toggle">
+        <!-- 月亮图标（夜间模式） -->
+        <svg id="moon-icon" class="icon text-2xl rotate-icon text-gray-700 dark:text-gray-200" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1129" width="1em" height="1em">
+            <path d="M467.648 927.008A412 412 0 0 1 133.808 755.632a31.408 31.408 0 0 1 27.76-49.6l5.136 0.368c5.6 0.368 11.2 0.784 16.864 0.784 191.168 0.272 346.48-154.24 347.2-345.392a341.744 341.744 0 0 0-64.752-200.352 31.376 31.376 0 0 1 27.664-49.6c221.216 12.256 392.192 198.864 385.12 420.304-7.072 221.44-189.6 396.736-411.152 394.864z m-240.24-159.296a345.968 345.968 0 1 0 325.536-583.328 402.56 402.56 0 0 1 40.976 177.424c-0.72 208.992-158.672 383.92-366.512 405.904z" fill="currentColor" p-id="1130"></path>
+        </svg>
+        
+        <!-- 太阳图标（白天模式） -->
+        <svg id="sun-icon" class="icon text-2xl rotate-icon text-gray-700 dark:text-gray-200 icon-hidden" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="6605" width="1em" height="1em">
+            <path d="M510 192a32 32 0 0 1-32-32V80a32 32 0 1 1 64 0v80a32 32 0 0 1-32 32z m224.864 93.136a32 32 0 0 1 0-45.248l56.576-56.576a32 32 0 1 1 45.248 45.248l-56.56 56.56a32 32 0 0 1-45.264 0.016z m93.136 224.864a32 32 0 0 1 32-32h80a32 32 0 1 1 0 64h-80a32 32 0 0 1-32-32z m-93.136 224.864a32 32 0 0 1 45.248 0l56.56 56.56a32 32 0 1 1-45.248 45.248l-56.576-56.56a32 32 0 0 1 0.016-45.248zM510 828a32 32 0 0 1 32 32v80a32 32 0 1 1-64 0v-80a32 32 0 0 1 32-32z m-224.864-93.136a32 32 0 0 1 0 45.248l-56.56 56.56a32 32 0 0 1-45.248-45.248l56.576-56.56a32 32 0 0 1 45.232 0zM192 510a32 32 0 0 1-32 32H80a32 32 0 1 1 0-64h80a32 32 0 0 1 32 32z m93.136-224.864a32 32 0 0 1-45.248 0l-56.576-56.56a32 32 0 0 1 45.248-45.248l56.56 56.576a32 32 0 0 1 0.016 45.232zM510 272c132.544 0 240 107.456 240 240 0 132.544-107.456 240-240 240-132.544 0-240-107.456-240-240 0-132.544 107.456-240 240-240z m0 64c-97.2 0-176 78.8-176 176s78.8 176 176 176 176-78.8 176-176-78.8-176-176-176z" fill="currentColor" p-id="6606"></path>
+        </svg>
+    </div>
+
+    <h1 class="text-4xl md:text-5xl font-bold text-gray-800 dark:text-gray-100 text-center mt-4 theme-transition fade-in float-animation">你被骗了</h1>
+    
+    <div class="w-full max-w-3xl rounded-xl overflow-hidden shadow-lg dark:shadow-gray-700/20 theme-transition scale-hover glow-effect shadow-move slide-in-up" style="animation-delay: 0.3s">
+        <iframe 
+            src="//player.bilibili.com/player.html?isOutside=true&aid=80433022&bvid=BV1GJ411x7h7&cid=137649199&p=1" 
+            scrolling="no" 
+            border="0" 
+            frameborder="no" 
+            framespacing="0" 
+            allowfullscreen="true"
+            class="w-full aspect-video transition-opacity duration-1000"
+        ></iframe>
+    </div>
+
+    <script>
+        // 获取DOM元素
+        const themeToggle = document.getElementById('theme-toggle');
+        const html = document.documentElement;
+        const moonIcon = document.getElementById('moon-icon');
+        const sunIcon = document.getElementById('sun-icon');
+        const heading = document.querySelector('h1');
+        const videoContainer = document.querySelector('.scale-hover');
+        const body = document.body;
+        
+        // 初始化背景样式
+        const lightBg = 'linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%)';
+        const darkBg = 'linear-gradient(135deg, #333333 0%, #444444 100%)';
+        
+        // 更新图标显示状态
+        function updateIcons(isDarkMode) {
+            sunIcon.classList.toggle('icon-visible', isDarkMode);
+            sunIcon.classList.toggle('icon-hidden', !isDarkMode);
+            moonIcon.classList.toggle('icon-visible', !isDarkMode);
+            moonIcon.classList.toggle('icon-hidden', isDarkMode);
+            body.style.background = isDarkMode ? darkBg : lightBg;
+        }
+        
+        // 初始化主题
+        function initTheme() {
+            // 检查本地存储或系统偏好
+            const savedTheme = localStorage.getItem('theme');
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            
+            // 确定初始主题
+            const isDarkMode = savedTheme ? savedTheme === 'dark' : prefersDark;
+            
+            html.classList.toggle('dark', isDarkMode);
+            body.style.background = isDarkMode ? darkBg : lightBg;
+            updateIcons(isDarkMode);
+        }
+        
+        // 切换主题
+        function toggleTheme() {
+            const isDarkMode = html.classList.toggle('dark');
+            localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
+            updateIcons(isDarkMode);
+            
+            // 添加主题切换动画效果
+            heading.classList.add('scale-105', 'rotate-1', 'transition-transform', 'duration-300');
+            setTimeout(() => heading.classList.remove('scale-105', 'rotate-1'), 300);
+            
+            videoContainer.classList.add('scale-102', 'transition-transform', 'duration-300');
+            setTimeout(() => videoContainer.classList.remove('scale-102'), 300);
+            
+            body.classList.add('opacity-90', 'transition-opacity', 'duration-200');
+            setTimeout(() => body.classList.remove('opacity-90'), 200);
+        }
+        
+        // 处理滚动效果
+        function handleScroll() {
+            const scrollPosition = window.scrollY;
+            const scrollFactor = Math.min(scrollPosition / 1000, 1);
+            
+            if (scrollPosition > 30) {
+                heading.style.transform = `
+                    translateY(${scrollPosition * 0.1}px) 
+                    scale(${1 - scrollFactor * 0.3})
+                    rotate(${scrollFactor * 1}deg)
+                `;
+                heading.style.opacity = `${1 - scrollFactor * 0.7}`;
+                videoContainer.style.transform = `scale(${1 + scrollFactor * 0.05})`;
+            } else {
+                heading.style.transform = 'translateY(0) scale(1) rotate(0)';
+                heading.style.opacity = '1';
+                videoContainer.style.transform = 'scale(1)';
+            }
+        }
+        
+        // 事件监听
+        themeToggle.addEventListener('click', toggleTheme);
+        window.addEventListener('scroll', handleScroll);
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
+            if (!localStorage.getItem('theme')) initTheme();
+        });
+        
+        // 页面加载完成后初始化
+        window.addEventListener('DOMContentLoaded', () => {
+            initTheme();
+            
+            // 视频容器渐显动画
+            setTimeout(() => {
+                videoContainer.style.opacity = '1';
+            }, 300);
+
+            // 添加视差滚动检测
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('bounce-soft');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.5 });
+
+            observer.observe(videoContainer);
+        });
+    </script>
+</body>
+</html>
